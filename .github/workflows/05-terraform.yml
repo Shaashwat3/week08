@@ -42,7 +42,7 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
 
-                  - name: Terraform Plan
+      - name: Terraform Plan
         env:
           TF_VAR_resource_group_name: "koalatech-week08-rg"
           TF_VAR_acr_name: "shaasweek0869826"
