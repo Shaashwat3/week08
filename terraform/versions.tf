@@ -17,3 +17,4 @@ terraform {
 provider "azurerm" {
   features {}
 }
+# Trigger Terraform workflow 
