@@ -42,5 +42,14 @@ jobs:
       - name: Terraform Validate
         run: terraform validate
 
-      - name: Terraform Plan
+            - name: Terraform Plan
+        env:
+          TF_VAR_resource_group_name: "koalatech-week08-rg"
+          TF_VAR_acr_name: "shaasweek0869826"
+          TF_VAR_storage_account_name: "shaasweek0869826"
+          TF_VAR_aks_cluster_name: "shaas-week08-aks"
+          TF_VAR_aks_dns_prefix: "koalatech"
+          TF_VAR_aks_node_count: "2"
+          TF_VAR_aks_node_vm_size: "Standard_D2s_v5"
+          TF_VAR_environment: "development"
         run: terraform plan -input=false
