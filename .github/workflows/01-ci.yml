@@ -5,10 +5,9 @@ on:
   push:
     branches:
       - main
-  
+
   # Manual trigger for the workflow
   workflow_dispatch:
-
 
 jobs:
 
@@ -81,7 +80,6 @@ jobs:
       AZURE_STORAGE_CONTAINER_NAME: ""
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -103,9 +101,9 @@ jobs:
 
 
   # =========================================================
-  # Build and Push Docker Images
+  # Build, Security Scan and Push Docker Images
   # =========================================================
-    build-and-push:
+  build-and-push:
     name: Build and Push ${{ matrix.image }}
     runs-on: ubuntu-latest
 
@@ -140,7 +138,6 @@ jobs:
             image: koalatech-enrollment-service
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -160,8 +157,10 @@ jobs:
             -t ${{ vars.ACR_LOGIN_SERVER }}/${{ matrix.image }}:${{ github.sha }} \
             ./${{ matrix.service }}
 
-      # Task 10.2D - Container security scanning
-      # Scan each image before it is pushed/deployed
+      # =====================================================
+      # Task 10.2D - Docker Scout Security Scanning
+      # Scan the image before it is pushed/deployed
+      # =====================================================
       - name: Docker Scout vulnerability scan
         uses: docker/scout-action@v1
         with:
@@ -170,10 +169,6 @@ jobs:
           only-severities: critical,high
           github-token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Push Docker image with commit SHA
-        run: |
-          docker push \
-            ${{ vars.ACR_LOGIN_SERVER }}/${{ matrix.image }}:${{ github.sha }}
       - name: Push Docker image with commit SHA
         run: |
           docker push \
