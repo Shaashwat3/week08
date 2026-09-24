@@ -105,7 +105,7 @@ jobs:
   # =========================================================
   # Build and Push Docker Images
   # =========================================================
-  build-and-push:
+    build-and-push:
     name: Build and Push ${{ matrix.image }}
     runs-on: ubuntu-latest
 
@@ -160,6 +160,20 @@ jobs:
             -t ${{ vars.ACR_LOGIN_SERVER }}/${{ matrix.image }}:${{ github.sha }} \
             ./${{ matrix.service }}
 
+      # Task 10.2D - Container security scanning
+      # Scan each image before it is pushed/deployed
+      - name: Docker Scout vulnerability scan
+        uses: docker/scout-action@v1
+        with:
+          command: cves,recommendations
+          image: local://${{ vars.ACR_LOGIN_SERVER }}/${{ matrix.image }}:${{ github.sha }}
+          only-severities: critical,high
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Push Docker image with commit SHA
+        run: |
+          docker push \
+            ${{ vars.ACR_LOGIN_SERVER }}/${{ matrix.image }}:${{ github.sha }}
       - name: Push Docker image with commit SHA
         run: |
           docker push \
