@@ -89,12 +89,12 @@ const Login = () => {
     <Container maxWidth="sm">
       <Card sx={{ mt: 10 }}>
         <CardContent sx={{ p: 4 }}>
-          <Typography
-            variant="h4"
-            gutterBottom
-          >
-            KoalaTech University
-          </Typography>
+<Typography
+  variant="h4"
+  gutterBottom
+>
+  KoalaTech University — Updated Release 2026
+</Typography>
 
           <Typography
             color="text.secondary"
